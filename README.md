@@ -2,7 +2,7 @@
 *Contributers: Siddharth Venkatesan, Nick Adams, David Zhang, and Spencer Vagg*
 
 ---
-###MusicRNN
+## MusicRNN
 This program generates music depending on the genre desired by using a Vanilla RNN. There are three RNN layers, two Fully Connected layers, and a Softmax Activation function at the end. To train the model, you can run the command 
 ```python
 python MusicRNN.py genre_of_music num_epochs
