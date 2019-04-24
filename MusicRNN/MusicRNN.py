@@ -49,7 +49,7 @@ def get_notes():
     """ Get all the notes and chords from the midi files in the ./midi_songs directory """
     notes = []
 
-    for file in glob.glob("midi_songs/*.mid"):
+    for file in glob.glob(sys.argv[1] + "/*.mid"):
         midi = converter.parse(file)
 
         print("Parsing %s" % file)
@@ -68,7 +68,7 @@ def get_notes():
             elif isinstance(element, chord.Chord):
                 notes.append('.'.join(str(n) for n in element.normalOrder))
 
-    with open('data/notes', 'wb') as filepath:
+    with open('data/notes_' + sys.argv[1] , 'w+b') as filepath:
         pickle.dump(notes, filepath)
 
     return notes
@@ -149,7 +149,7 @@ def train(trainloader, net, criterion, optimizer, device):
 
     loss_graph = []
     start = time.time()
-    for epoch in range(100):  # loop over the dataset for x number of epochs
+    for epoch in range(int(sys.argv[2])):  # loop over the dataset for x number of epochs
         running_loss = 0.0
         print('epoch: %d' % (epoch + 1))
         #For each batch run through model, backprop, and optimize weights
@@ -168,7 +168,8 @@ def train(trainloader, net, criterion, optimizer, device):
             # print statistics
             running_loss += loss.item()
             
-            if i % 10 == 9:
+            if i % 10 == 0:
+                print('Iteration: ', i)
                 loss_graph.append(loss.item())
                 running_loss = 0.0
         end = time.time()
@@ -179,7 +180,7 @@ def train(trainloader, net, criterion, optimizer, device):
             'model_state_dict': net.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
             'loss': loss
-            }, 'music2.pth')
+            }, sys.argv[1]+'.pth')
     
     # Plot learning curve
     fig1, ax1 = plt.subplots()

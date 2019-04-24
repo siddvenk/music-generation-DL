@@ -14,11 +14,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import time
 from scipy.stats import mode
+import sys
 
 def generate():
     """ Generate a piano midi file """
     #load the notes used to train the model
-    with open('data/notes', 'rb') as filepath:
+    with open('data/notes_' + sys.argv[1], 'rb') as filepath:
         notes = pickle.load(filepath)
 
     # Get all pitch names
@@ -29,7 +30,7 @@ def generate():
     network_input, normalized_input = prepare_sequences(notes, pitchnames, n_vocab)
     
     model = RNN(n_vocab)
-    checkpoint = torch.load('music.pth')
+    checkpoint = torch.load(sys.argv[1] + '.pth')
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
 
@@ -70,7 +71,7 @@ class RNN(nn.Module):
         self.RNN3 = nn.RNN(512, 512, 2)
         self.fc1 = nn.Linear(512, 256)
         self.fc2 = nn.Linear(256, n_vocab)
-        self.Softmax = nn.Softmax(dim=-1)
+        self.Softmax = nn.Softmax(dim=1)
 
 
         self.forward = nn.Sequential(
@@ -111,7 +112,7 @@ def generate_notes(model, network_input, pitchnames, n_vocab):
     prediction_output = []
 
     # generate 500 notes
-    for note_index in range(500):
+    for note_index in range(int(sys.argv[2])):
         print('Generating note %d' % (note_index + 1))
         prediction_input = np.reshape(np.asarray(pattern), (1, len(pattern), 1))
         #print(prediction_input.shape)
@@ -171,7 +172,7 @@ def create_midi(prediction_output):
 
     midi_stream = stream.Stream(output_notes)
 
-    midi_stream.write('midi', fp='test_output.mid')
+    midi_stream.write('midi', fp= sys.argv[1] +'.mid')
 
 if __name__ == '__main__':
     generate()
