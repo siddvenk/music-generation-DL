@@ -12,6 +12,11 @@ The three genres to choose from are title_screen, battle, and piano. Each epoch 
 python Generate.py genre_of_music num_notes_to_generate
 ```
 ---
+## FCE
+1. Download .mid/.midi files and use the convert_to_npy.py script to convert them into simple numpy arrays
+1. Create a data directory containing 3 subdirectories: title, battle, piano. Place .npy files in their proper location.
+1. Confirm you have the Python packages PyTorch, music21, and mido installed.
+1. Run `music.py`. Make sure it is at the same level as the data/ directory.
 ---
 ## HVAE
 
