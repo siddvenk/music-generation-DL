@@ -31,3 +31,10 @@ bash /tmp/magenta-install.sh
 5. Change the BASE_DIRECTORY in vae_train.sh to your base directory
 6. Run the vae_train.sh script to start the process of data formatting, training, and sample generation
 ---
+## GAN
+
+1. Download MuseGAN from https://github.com/salu133445/musegan.
+2. Run gen_train.py to preprocess the MIDI files and save them into an npz file, which stores the data as a sparse matrix.
+3. Create an experiment in museGAN. Set the training data name and other parameters. (See the documentation of MuseGAN.)
+4. Train the network and obtain generated music.
+5. Run play_npz.sh to post-process the musical phrases and convert them into a single MIDI file.
