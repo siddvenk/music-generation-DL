@@ -36,11 +36,14 @@ def train_network():
     y_train = torch.tensor(network_output.astype(dtype = 'float32'))
 
     model = RNN(n_vocab).to(device)
+    checkpoint = torch.load(sys.argv[1] + '.pth')
+    model.load_state_dict(checkpoint['model_state_dict'])
+    model.train()
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 
     trainset = data_utils.TensorDataset(X_train, y_train)
-    trainloader = torch.utils.data.DataLoader(trainset, batch_size=1100, shuffle=True)
+    trainloader = torch.utils.data.DataLoader(trainset, batch_size=math.floor(network_input.shape[0] / 3), shuffle=True)
 
     train(trainloader, model, criterion, optimizer, device)
 
